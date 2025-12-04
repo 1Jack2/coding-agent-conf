@@ -1,0 +1,14 @@
+{
+  "name": "dev-browser-skill",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start-server": "bun x tsx scripts/start-server.ts"
+  },
+  "dependencies": {
+    "dev-browser": "*"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0"
+  }
+}
