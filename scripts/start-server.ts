@@ -1,4 +1,4 @@
-import { serve } from "dev-browser";
+import { serve } from "@/index.js";
 import { execSync } from "child_process";
 import { mkdirSync, existsSync } from "fs";
 import { join, dirname } from "path";

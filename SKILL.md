@@ -48,10 +48,10 @@ The `tmp/` directory is created automatically when you start the server.
 
 ### Basic Template
 
-Always use the package name `dev-browser/client`.
+Always use the `@/client.js` import path for scripts in `tmp/`.
 
 ```typescript
-import { connect, waitForPageLoad } from "dev-browser/client";
+import { connect, waitForPageLoad } from "@/client.js";
 
 const client = await connect("http://localhost:9222");
 const page = await client.page("main"); // get or create a named page
@@ -91,7 +91,7 @@ Follow this pattern for complex tasks:
 **Step 1: Navigate to login page**
 
 ```typescript
-import { connect, waitForPageLoad } from "dev-browser/client";
+import { connect, waitForPageLoad } from "@/client.js";
 
 const client = await connect("http://localhost:9222");
 const page = await client.page("auth");
@@ -109,7 +109,7 @@ await client.disconnect();
 **Step 2: Fill credentials** (after confirming login form exists)
 
 ```typescript
-import { connect, waitForPageLoad } from "dev-browser/client";
+import { connect, waitForPageLoad } from "@/client.js";
 
 const client = await connect("http://localhost:9222");
 const page = await client.page("auth");
@@ -130,7 +130,7 @@ await client.disconnect();
 **Step 3: Verify success** (if needed)
 
 ```typescript
-import { connect } from "dev-browser/client";
+import { connect } from "@/client.js";
 
 const client = await connect("http://localhost:9222");
 const page = await client.page("auth");
@@ -171,7 +171,7 @@ await page.check('input[type="checkbox"]');
 ### Waiting
 
 ```typescript
-import { waitForPageLoad } from "dev-browser/client";
+import { waitForPageLoad } from "@/client.js";
 
 // Preferred: Wait for page to fully load (checks document.readyState and network idle)
 await waitForPageLoad(page);
@@ -227,7 +227,7 @@ await page.screenshot({ path: "tmp/full.png", fullPage: true });
 For a more structured, text-based view of the page, use `getLLMTree()`. This returns a human-readable representation of interactive elements on the page, making it easier to understand page structure without parsing raw HTML.
 
 ```typescript
-import { connect, waitForPageLoad } from "dev-browser/client";
+import { connect, waitForPageLoad } from "@/client.js";
 
 const client = await connect("http://localhost:9222");
 const page = await client.page("main");
@@ -282,7 +282,7 @@ by
 Once you identify an element by its index in the tree, use `getSelectorForID()` to get a CSS selector you can use with Playwright:
 
 ```typescript
-import { connect } from "dev-browser/client";
+import { connect } from "@/client.js";
 
 const client = await connect("http://localhost:9222");
 const page = await client.page("main");
@@ -313,7 +313,7 @@ await client.disconnect();
 ### Example: Finding and Clicking a Link
 
 ```typescript
-import { connect, waitForPageLoad } from "dev-browser/client";
+import { connect, waitForPageLoad } from "@/client.js";
 
 const client = await connect("http://localhost:9222");
 const page = await client.page("main");
@@ -358,7 +358,7 @@ If a script fails, the page state is preserved. You can:
 ```typescript
 // Recovery script - check current state
 // Save as dev-browser/tmp/debug-state.ts and run with: bun x tsx tmp/debug-state.ts
-import { connect } from "dev-browser/client";
+import { connect } from "@/client.js";
 
 const client = await connect("http://localhost:9222");
 const page = await client.page("main");
