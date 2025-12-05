@@ -5,7 +5,7 @@ description: Browser automation with persistent page state. Use when testing web
 
 # Dev Browser Skill
 
-Browser automation that maintains page state across script executions. Write small, focused scripts to accomplish tasks incrementally.
+Browser automation that maintains page state across script executions. Write small, focused scripts to accomplish tasks incrementally. Once you've proven out part of a workflow and there is repeated work to be done, you can write a script to do the repeated work in a single execution.
 
 ## Choosing Your Approach
 
@@ -42,15 +42,30 @@ The server starts a Chromium browser with a REST API for page management (defaul
 
 ## Writing Scripts
 
-Write scripts to `tmp/` with unique names (e.g., `navigate-login.ts`, `fill-form.ts`) and run them with `bun x tsx tmp/<script-name>.ts`.
+Execute scripts inline using heredocs—no need to write files for one-off automation:
 
-The `tmp/` directory is created automatically when you start the server.
+```bash
+cd skills/dev-browser && bun x tsx <<'EOF'
+import { connect } from "@/client.js";
+const client = await connect("http://localhost:9222");
+const page = await client.page("main");
+// Your automation code here
+await client.disconnect();
+EOF
+```
+
+**Only write to `tmp/` files when:**
+
+- The script needs to be reused multiple times
+- The script is complex and you need to iterate on it
+- The user explicitly asks for a saved script
 
 ### Basic Template
 
-Always use the `@/client.js` import path for scripts in `tmp/`.
+Use the `@/client.js` import path for all scripts.
 
-```typescript
+```bash
+cd skills/dev-browser && bun x tsx <<'EOF'
 import { connect, waitForPageLoad } from "@/client.js";
 
 const client = await connect("http://localhost:9222");
@@ -67,6 +82,7 @@ console.log({ title, url });
 
 // Disconnect so the script exits (page stays alive on the server)
 await client.disconnect();
+EOF
 ```
 
 ### Key Principles
@@ -90,7 +106,8 @@ Follow this pattern for complex tasks:
 
 **Step 1: Navigate to login page**
 
-```typescript
+```bash
+cd skills/dev-browser && bun x tsx <<'EOF'
 import { connect, waitForPageLoad } from "@/client.js";
 
 const client = await connect("http://localhost:9222");
@@ -104,11 +121,13 @@ const hasLoginForm = (await page.$("form#login")) !== null;
 console.log({ url: page.url(), hasLoginForm });
 
 await client.disconnect();
+EOF
 ```
 
 **Step 2: Fill credentials** (after confirming login form exists)
 
-```typescript
+```bash
+cd skills/dev-browser && bun x tsx <<'EOF'
 import { connect, waitForPageLoad } from "@/client.js";
 
 const client = await connect("http://localhost:9222");
@@ -125,11 +144,13 @@ const isLoggedIn = url.includes("/dashboard");
 console.log({ url, isLoggedIn });
 
 await client.disconnect();
+EOF
 ```
 
 **Step 3: Verify success** (if needed)
 
-```typescript
+```bash
+cd skills/dev-browser && bun x tsx <<'EOF'
 import { connect } from "@/client.js";
 
 const client = await connect("http://localhost:9222");
@@ -140,6 +161,7 @@ const userMenu = (await page.$(".user-menu")) !== null;
 console.log({ welcomeText, userMenu, success: userMenu });
 
 await client.disconnect();
+EOF
 ```
 
 ## Common Operations
@@ -226,7 +248,8 @@ await page.screenshot({ path: "tmp/full.png", fullPage: true });
 
 For a more structured, text-based view of the page, use `getLLMTree()`. This returns a human-readable representation of interactive elements on the page, making it easier to understand page structure without parsing raw HTML.
 
-```typescript
+```bash
+cd skills/dev-browser && bun x tsx <<'EOF'
 import { connect, waitForPageLoad } from "@/client.js";
 
 const client = await connect("http://localhost:9222");
@@ -240,6 +263,7 @@ const tree = await client.getLLMTree("main");
 console.log(tree);
 
 await client.disconnect();
+EOF
 ```
 
 #### Example Output
@@ -281,7 +305,8 @@ by
 
 Once you identify an element by its index in the tree, use `getSelectorForID()` to get a CSS selector you can use with Playwright:
 
-```typescript
+```bash
+cd skills/dev-browser && bun x tsx <<'EOF'
 import { connect } from "@/client.js";
 
 const client = await connect("http://localhost:9222");
@@ -300,6 +325,7 @@ console.log(selector); // e.g., "a:nth-of-type(3)" or "#article-link"
 await page.click(selector);
 
 await client.disconnect();
+EOF
 ```
 
 ### When to Use Each Approach
@@ -312,7 +338,8 @@ await client.disconnect();
 
 ### Example: Finding and Clicking a Link
 
-```typescript
+```bash
+cd skills/dev-browser && bun x tsx <<'EOF'
 import { connect, waitForPageLoad } from "@/client.js";
 
 const client = await connect("http://localhost:9222");
@@ -337,6 +364,7 @@ await waitForPageLoad(page);
 console.log("Navigated to:", page.url());
 
 await client.disconnect();
+EOF
 ```
 
 ## Debugging Tips
@@ -355,9 +383,8 @@ If a script fails, the page state is preserved. You can:
 2. Check the current URL and DOM state
 3. Write a recovery script to get back on track
 
-```typescript
-// Recovery script - check current state
-// Save as dev-browser/tmp/debug-state.ts and run with: bun x tsx tmp/debug-state.ts
+```bash
+cd skills/dev-browser && bun x tsx <<'EOF'
 import { connect } from "@/client.js";
 
 const client = await connect("http://localhost:9222");
@@ -371,4 +398,5 @@ console.log({
 });
 
 await client.disconnect();
+EOF
 ```
