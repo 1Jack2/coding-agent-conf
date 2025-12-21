@@ -517,45 +517,18 @@ export default defineBackground(() => {
       const isConnected = tabInfo?.state === "connected";
       const isRestricted = isRestrictedUrl(tab.url);
 
-      // Set icon color based on state
+      // Set title based on state
       if (isConnected) {
-        await chrome.action.setIcon({
-          tabId: tab.id,
-          path: {
-            16: "/icons/icon-green-16.png",
-            32: "/icons/icon-green-32.png",
-            48: "/icons/icon-green-48.png",
-            128: "/icons/icon-green-128.png",
-          },
-        });
         await chrome.action.setTitle({
           tabId: tab.id,
           title: "Connected - Click to disconnect",
         });
       } else if (isRestricted) {
-        await chrome.action.setIcon({
-          tabId: tab.id,
-          path: {
-            16: "/icons/icon-gray-16.png",
-            32: "/icons/icon-gray-32.png",
-            48: "/icons/icon-gray-48.png",
-            128: "/icons/icon-gray-128.png",
-          },
-        });
         await chrome.action.setTitle({
           tabId: tab.id,
           title: "Cannot attach to this page",
         });
       } else {
-        await chrome.action.setIcon({
-          tabId: tab.id,
-          path: {
-            16: "/icons/icon-black-16.png",
-            32: "/icons/icon-black-32.png",
-            48: "/icons/icon-black-48.png",
-            128: "/icons/icon-black-128.png",
-          },
-        });
         await chrome.action.setTitle({
           tabId: tab.id,
           title: "Click to attach debugger",
