@@ -34,6 +34,8 @@ Connects to user's existing Chrome browser. Use this when:
 - The user is already logged into sites and wants you to do things behind an authed experience that isn't local dev.
 - The user asks you to use the extension
 
+**Important**: The core flow is still the same. You create named pages inside of their browser.
+
 **Start the relay server:**
 
 ```bash
@@ -107,22 +109,11 @@ const text = await page.evaluate(() => {
   const el: HTMLElement = document.body; // Type annotation breaks in browser!
   return el.innerText;
 });
+```
 
 ## Scraping Data
 
-  For large datasets (followers, posts, search results), **intercept and replay network requests** rather than parsing the DOM. This is faster, more reliable, and handles pagination automatically.
-
-  ### Approach
-
-  1. **Intercept API responses**: Use `page.on('response')` to capture data from `/api/` or `/graphql/` endpoints
-  2. **Inspect the schema first**: Save responses to `tmp/response.json` to understand the data structure before writing extraction code
-  3. **Replay with pagination**: Once you understand the API, replay requests directly with cursor/pagination parameters instead of scrolling
-  4. **Use Set for deduplication**: APIs often return overlapping data across pages
-
-  ### Tips
-
-  - **Extension mode limitation**: `page.context().cookies()` doesn't work - capture auth headers from intercepted requests instead
-```
+For scraping large datasets, intercept and replay network requests rather than scrolling the DOM. See [references/scraping.md](references/scraping.md) for the complete guide covering request capture, schema discovery, and paginated API replay.
 
 ## Client API
 
