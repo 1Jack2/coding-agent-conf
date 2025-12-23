@@ -46,9 +46,8 @@ Wait for `Waiting for extension to connect...`
 
 **Workflow:**
 
-1. User clicks extension icon on each tab to attach
-2. Scripts call `client.page("name")` just like the normal mode to create new pages / connect to existing ones.
-3. Automation runs on the user's actual browser session
+1. Scripts call `client.page("name")` just like the normal mode to create new pages / connect to existing ones.
+2. Automation runs on the user's actual browser session
 
 If the extension hasn't connected yet, tell the user to launch and activate it. Download link: https://github.com/SawyerHood/dev-browser/releases
 
