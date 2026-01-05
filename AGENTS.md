@@ -9,6 +9,17 @@ This repository is a container for skill directories pulled from upstream projec
   - `skills/ast-grep`: docs subtree from `ast-grep/claude-skill` (`ast-grep` path).
 - Add new skills by creating a remote and merging the desired upstream subdirectory into `skills/<name>`.
 
+## Setup After Clone
+- Add upstream remotes (once per clone):
+  ```
+  git remote add dev-browser https://github.com/SawyerHood/dev-browser.git
+  git remote add ast-grep https://github.com/ast-grep/claude-skill.git
+  ```
+- Fetch upstreams before running the subtree workflow:
+  ```
+  git fetch dev-browser ast-grep
+  ```
+
 ## Subtree Update Workflow (preserve upstream history, no squash)
 - dev-browser (`skills/dev-browser`):
   ```
