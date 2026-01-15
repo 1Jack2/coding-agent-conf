@@ -6,7 +6,7 @@ This repository is a container for skill directories pulled from upstream projec
 - Root `skills/` hosts all imported skills as `skills/<skill-name>`.
 - Current subtrees:
   - `skills/dev-browser`: upstream from `SawyerHood/dev-browser` (`skills/dev-browser` path).
-  - `skills/ast-grep`: docs subtree from `ast-grep/claude-skill` (`ast-grep` path).
+  - `skills/ast-grep`: docs subtree from `ast-grep/claude-skill` (`ast-grep/skills/ast-grep` path).
 - Add new skills by creating a remote and merging the desired upstream subdirectory into `skills/<name>`.
 
 ## Setup After Clone
@@ -33,7 +33,7 @@ This repository is a container for skill directories pulled from upstream projec
   ```
   git fetch ast-grep
   git switch --detach ast-grep/main
-  git subtree split --prefix=ast-grep --branch ast-grep-skill
+  git subtree split --prefix=ast-grep/skills/ast-grep --branch ast-grep-skill
   git switch main
   git subtree merge --prefix=skills/ast-grep ast-grep-skill
   ```
