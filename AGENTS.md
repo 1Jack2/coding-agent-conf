@@ -7,6 +7,7 @@ This repository is a container for skill directories pulled from upstream projec
 - Current subtrees:
   - `skills/dev-browser`: upstream from `SawyerHood/dev-browser` (`skills/dev-browser` path).
   - `skills/ast-grep`: docs subtree from `ast-grep/claude-skill` (`ast-grep/skills/ast-grep` path).
+  - `skills/agent-browser`: upstream from `vercel-labs/agent-browser` (`skills/agent-browser` path).
 - Add new skills by creating a remote and merging the desired upstream subdirectory into `skills/<name>`.
 
 ## Setup After Clone
@@ -14,10 +15,11 @@ This repository is a container for skill directories pulled from upstream projec
   ```
   git remote add dev-browser https://github.com/SawyerHood/dev-browser.git
   git remote add ast-grep https://github.com/ast-grep/claude-skill.git
+  git remote add agent-browser https://github.com/vercel-labs/agent-browser.git
   ```
 - Fetch upstreams before running the subtree workflow:
   ```
-  git fetch dev-browser ast-grep
+  git fetch dev-browser ast-grep agent-browser
   ```
 
 ## Subtree Update Workflow (preserve upstream history, no squash)
@@ -36,6 +38,14 @@ This repository is a container for skill directories pulled from upstream projec
   git subtree split --prefix=ast-grep/skills/ast-grep --branch ast-grep-skill
   git switch main
   git subtree merge --prefix=skills/ast-grep ast-grep-skill
+  ```
+- agent-browser (`skills/agent-browser`):
+  ```
+  git fetch agent-browser
+  git switch --detach agent-browser/main
+  git subtree split --prefix=skills/agent-browser --branch agent-browser-split
+  git switch main
+  git subtree merge --prefix=skills/agent-browser agent-browser-split
   ```
 - New skill template:
   ```
